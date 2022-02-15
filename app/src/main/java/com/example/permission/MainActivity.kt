@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -20,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.permission.ui.theme.PermissionTheme
 
 class MainActivity : ComponentActivity() {
+    val myviewmodel by viewModels<viewmodel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -35,14 +37,24 @@ class MainActivity : ComponentActivity() {
                             per.forEach { s, b ->
                                 Log.i("MainActivity", "My permisiions $s --> $b")
                             }
+                            myviewmodel.setstate(
+                                per[Manifest.permission.CAMERA] == true
+                            )
+                            Log.i("MainActivity","Logged value ${myviewmodel.mystate}")
                         })
+                    if (myviewmodel.mystate){
+                        SimpleCameraPreview()
+                    }else{
+                        imagepick()
+                    }
+
                     LaunchedEffect(key1 = true) {
                         mypermissions.launch(
                             arrayOf(
                                 Manifest.permission.CAMERA,
                                 Manifest.permission.ACCESS_COARSE_LOCATION,
                                 Manifest.permission.RECORD_AUDIO
-                                )
+                            )
                         )
                     }
                 }
