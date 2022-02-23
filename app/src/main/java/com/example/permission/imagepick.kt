@@ -34,6 +34,8 @@ fun imagepick() {
     var newlist = remember {
         mutableStateOf(emptyList<Bitmap>())
     }
+    //comments
+
     val bitmap = remember { mutableStateOf<Bitmap?>(null) }
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
